@@ -9,8 +9,74 @@
 </head>
 
 <body>
-    <h1 class="title">Survey Form</h1>
-    <p class="description">A description of the form</p>
+    <div class="container">
+        <header class="header">
+            <h1 id="title">Survey Form</h1>
+            <p class="description" id="description">Thanks for filling out this form</p>
+        </header>
+        <form action="index.html" id="description">
+            <div class="form_group">
+                <label for="name" id="name-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="write name" required>
+            </div>
+            <div class="form_group">
+                <label for="email" id="email-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="write email" required>
+            </div>
+            <div class="form_group">
+                <label for="number" id="number-label">Age</label>
+                <input type="number" name="number" class="form-control" id="number" min="18" max="100" placeholder="age"
+                    required>
+            </div>
+            <div class="form_group">
+                <p>How much do you earn</p>
+                <select name="dropdown" id="dropdown" class="form-control">Please choose an option
+                    <option value="null">Select anual income income </option>
+                    <option value="option1">10 - 15k</option>
+                    <option value="option2">15 - 20k</option>
+                    <option value="option3">30 - 40k</option>
+                    <option value="option4">above 40k</option>
+                </select>
+            </div>
+            <div class="form_group form_spacing">
+                <p>Are you looking for work</p>
+                <label for="yes">
+                    <input type="radio" name="work" id="yes" value="yes" class="label_space input-radio">
+                    Yes</label>
+                <label for="no">
+                    <input type="radio" name="work" id="no" value="no" class="label_space input-radio">
+                    No</label>
+                <label for="maybe">
+                    <input type="radio" name="work" id="maybe" value="maybe"
+                        class="label_space input-radio">Maybe</label>
+            </div>
+            <div class="form_group form_spacing">
+                <p>Select your interests</p>
+
+                <label for="TV"><input type="checkbox" name="interests" id="TV" class="label_space input-checkbox">
+                    TV</label>
+
+                <label for="sport" value="sport"><input type="checkbox" name="interests" id="sport"
+                        class="label_space input-checkbox">Sport</label>
+
+                <label for="sleeping"><input type="checkbox" name="interests" id="sleeping"
+                        class="label_space input-checkbox">Sleeping</label>
+
+                <label for="reading"><input type="checkbox" name="interests" id="reading"
+                        class="label_space input-checkbox">Reading</label>
+
+            </div>
+            <div class="form_group form_spacing">
+                <p>Any comments</p>
+                <textarea id="story" name="story" rows="5" cols="33" class="input-textarea"></textarea>
+            </div>
+            <div class="form_group">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
 
 </body>
 
