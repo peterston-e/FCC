@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python/C API Reference Manual</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <header>Python/C API Reference Manual</header>
+        <a href="#Introduction" class="nav-link">Introduction</a>
+        <a href="#Coding_Standards" class="nav-link">Coding Standards</a>
+        <a href="#Obects_and_Types" class="nav-link">Objects and Types</a>
+        <a href="#Exceptions" class="nav-link">Exceptions</a>
+        <a href="#Embedding_Python" class="nav-link">Embedding Python</a>
+        <a href="#Debugging_Builds" class="nav-link">Debugging Builds</a>
+        <a href="#Include_Files" class="nav-link">Include Files</a>
+    </nav>
+    <main id="main-doc">
+        <section class="main-section" id="Introduction">
+            <header class="header">Introduction</header>
+            <article>
+                <p>The Application Programmer’s Interface to Python gives C and C++ programmers access to the Python
+                    interpreter at a variety of levels. The API is equally usable from C++, but for brevity it is
+                    generally referred to as the Python/C API. There are two fundamentally different reasons for using
+                    the Python/C API. The first reason is to write extension modules for specific purposes; these are C
+                    modules that extend the Python interpreter. This is probably the most common use. The second reason
+                    is to use Python as a component in a larger application; this technique is generally referred to as
+                    embedding Python in an application.</p>
+                <ul>
+                    <li>C</li>
+                    <li>C++</li>
+                    <li>PY</li>
+                </ul>
+                <code>
+                    #define PY_SSIZE_T_CLEAN
+                    #include Python.h 
+                </code>
+                <p>
+                    Many API functions are useful independent or whether you are embedding or extending Python;
+                    moreover,
+                    most applications that embed Python will need to provide a custom extension as well, so it’s
+                    probably a good idea to become familiar with writing an extension before attempting to embed Python
+                    in a real application.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Coding_Standards">
+            <header class="header">Coding Standards</header>
+            <article>
+                <p>
+                    If you’re writing C code for inclusion in CPython, you must follow the guidelines and standards
+                    defined in PEP 7. These guidelines apply regardless of the version of Python you are contributing
+                    to. Following these conventions is not necessary for your own third party extension modules, unless
+                    you eventually expect to contribute them to Python.
+                </p>
+                <p>
+                    All function, type and macro definitions needed to use the Python/C API are included in your code by
+                    the following line:
+                </p>
+                <code>
+                    static inline Py_ALWAYS_INLINE int random(void) { return 4; }
+                </code>
+                <ul>
+                    <li>Py_CHARMASK(c)</li>
+                    <li>Py_DEPRECATED</li>
+                    <li>Py_GETENV(s)</li>
+                </ul>
+                <p>
+                    In release mode, the macro helps the compiler to optimize the code, and avoids a warning about
+                    unreachable code. For example, the macro is implemented with __builtin_unreachable() on GCC in
+                    release mode.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Obects_and_Types">
+            <header class="header" id="">Objects and Types</header>
+            <article>
+                <p>
+                    Most Python/C API functions have one or more arguments as well as a return value of type PyObject*.
+                    This type is a pointer to an opaque data type representing an arbitrary Python object. Since all
+                    Python object types are treated the same way by the Python language in most situations (e.g.,
+                    assignments, scope rules, and argument passing), it is only fitting that they should be represented
+                    by a single C type. Almost all Python objects live on the heap: you never declare an automatic or
+                    static variable of type PyObject, only pointer variables of type PyObject* can be declared. The sole
+                    exception are the type objects; since these must never be deallocated, they are typically static
+                    PyTypeObject objects.
+                </p>
+                <p>
+                    All Python objects (even Python integers) have a type and a reference count. An object’s type
+                    determines what kind of object it is (e.g., an integer, a list, or a user-defined function; there
+                    are many more as explained in The standard type hierarchy). For each of the well-known types there
+                    is a macro to check whether an object is of that type; for instance, PyList_Check(a) is true if (and
+                    only if) the object pointed to by a is a Python list.
+                </p>
+                <code>
+                    let y = 13.
+                </code>
+                <p>
+                    A safe approach is to always use the generic operations (functions whose name begins with PyObject_,
+                    PyNumber_, PySequence_ or PyMapping_). These operations always create a new strong reference (i.e.
+                    increment the reference count) of the object they return. This leaves the caller with the
+                    responsibility to call Py_DECREF() when they are done with the result; this soon becomes second
+                    nature.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Exceptions">
+            <header class="header">Exceptions</header>
+            <article>
+                <p>
+                    The Python programmer only needs to deal with exceptions if specific error handling is required;
+                    unhandled exceptions are automatically propagated to the caller, then to the caller’s caller, and so
+                    on, until they reach the top-level interpreter, where they are reported to the user accompanied by a
+                    stack traceback.
+                </p>
+                <ul>
+                    <li>Py_XDECREF(item);</li>
+                    <li>Py_XDECREF(const_one);</li>
+                </ul>
+                <p>
+                    For C programmers, however, error checking always has to be explicit. All functions in the Python/C
+                    API can raise exceptions, unless an explicit claim is made otherwise in a function’s documentation.
+                    In general, when a function encounters an error, it sets an exception, discards any object
+                    references that it owns, and returns an error indicator. If not documented otherwise, this indicator
+                    is either NULL or -1, depending on the function’s return type. A few functions return a Boolean
+                    true/false result, with false indicating an error. Very few functions return no explicit error
+                    indicator or have an ambiguous return value, and require explicit testing for errors with
+                    PyErr_Occurred(). These exceptions are always explicitly documented.
+                </p>
+                <code>
+                    def incr_item(dict, key):
+                    static struct PyModuleDef spam_module
+                    PyModuleDef_HEAD_INIT,
+                </code>
+                <p>
+                    As a general principle, a function that calls another function to perform some task should check
+                    whether the called function raised an exception, and if so, pass the exception state on to its
+                    caller. It should discard any object references that it owns, and return an error indicator, but it
+                    should not set another exception — that would overwrite the exception that was just raised, and lose
+                    important information about the exact cause of the error.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Embedding_Python">
+            <header class="header" id="">Embedding Python</header>
+            <article>
+                <p>
+                    The one important task that only embedders (as opposed to extension writers) of the Python
+                    interpreter have to worry about is the initialization, and possibly the finalization, of the Python
+                    interpreter. Most functionality of the interpreter can only be used after the interpreter has been
+                    initialized.
+                </p>
+                <p>
+                    The basic initialization function is Py_Initialize(). This initializes the table of loaded modules,
+                    and creates the fundamental modules builtins, __main__, and sys. It also initializes the module
+                    search path (sys.path).
+                </p>
+                <code>
+                    const MY_OBJECT = {"key": "value"}; MY_OBJECT.key =
+                    "otherValue";
+                </code>
+                <p>
+                    On most systems (in particular, on Unix and Windows, although the details are slightly different),
+                    Py_Initialize() calculates the module search path based upon its best guess for the location of the
+                    standard Python interpreter executable, assuming that the Python library is found in a fixed
+                    location relative to the Python interpreter executable. In particular, it looks for a directory
+                    named lib/pythonX.Y relative to the parent directory where the executable named python is found on
+                    the shell command search path (the environment variable PATH).
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Debugging_Builds">
+            <header class="header">Debugging Builds</header>
+            <article>
+                <p>
+                    Python can be built with several macros to enable extra checks of the interpreter and extension
+                    modules. These checks tend to add a large amount of overhead to the runtime so they are not enabled
+                    by default.
+                </p>
+                <p>
+                    A full list of the various types of debugging builds is in the file Misc/SpecialBuilds.txt in the
+                    Python source distribution. Builds are available that support tracing of reference counts, debugging
+                    the memory allocator, or low-level profiling of the main interpreter loop. Only the most frequently
+                    used builds will be described in the remainder of this section.
+                </p>
+                <code>
+                    configure --with-trace-refs 
+                </code>
+                <p>
+                    In addition to the reference count debugging described below, extra checks are performed, see Python
+                    Debug Build.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Include_Files">
+            <header class="header">Include Files</header>
+            <article>
+                <p>
+                    All user visible names defined by Python.h (except those defined by the included standard headers)
+                    have one of the prefixes Py or _Py. Names beginning with _Py are for internal use by the Python
+                    implementation and should not be used by extension writers. Structure member names do not have a
+                    reserved prefix.
+                </p>
+                <p>
+                    The header files are typically installed with Python. On Unix, these are located in the directories
+                    prefix/include/pythonversion/ and exec_prefix/include/pythonversion/, where prefix and exec_prefix
+                    are defined by the corresponding parameters to Python’s configure script and version is '%d.%d' %
+                    sys.version_info[:2]. On Windows, the headers are installed in prefix/include, where prefix is the
+                    installation directory specified to the installer.
+                </p>
+                <code>
+                    if (condition_1) { statement_1; } else if (condition_2) {
+                        statement_2; } else if (condition_n) { statement_n; } else {
+                        statement_last; }
+                </code>
+                <p>
+                    C++ users should note that although the API is defined entirely using C, the header files properly
+                    declare the entry points to be extern "C". As a result, there is no need to do anything special to
+                    use the API from C++.
+                </p>
+            </article>
+        </section>
+    </main>
+</body>
+
+</html>
