@@ -10,7 +10,7 @@
 
 <body>
     <nav id="navbar">
-        <header>Python/C API Reference Manual</header>
+        <header class="header">Python/C API Reference Manual</header>
         <a href="#Introduction" class="nav-link">Introduction</a>
         <a href="#Coding_Standards" class="nav-link">Coding Standards</a>
         <a href="#Obects_and_Types" class="nav-link">Objects and Types</a>
@@ -18,6 +18,7 @@
         <a href="#Embedding_Python" class="nav-link">Embedding Python</a>
         <a href="#Debugging_Builds" class="nav-link">Debugging Builds</a>
         <a href="#Include_Files" class="nav-link">Include Files</a>
+        <a href=""></a>
     </nav>
     <main id="main-doc">
         <section class="main-section" id="Introduction">
@@ -132,9 +133,7 @@
                     PyErr_Occurred(). These exceptions are always explicitly documented.
                 </p>
                 <code>
-                    def incr_item(dict, key):
-                    static struct PyModuleDef spam_module
-                    PyModuleDef_HEAD_INIT,
+                    def incr_item(dict, key):static struct PyModuleDef 
                 </code>
                 <p>
                     As a general principle, a function that calls another function to perform some task should check
@@ -160,7 +159,7 @@
                     search path (sys.path).
                 </p>
                 <code>
-                    const MY_OBJECT = {"key": "value"}; MY_OBJECT.key =
+                     const MY_OBJECT = {"key": "value"}; MY_OBJECT.key =
                     "otherValue";
                 </code>
                 <p>
@@ -212,11 +211,11 @@
                     sys.version_info[:2]. On Windows, the headers are installed in prefix/include, where prefix is the
                     installation directory specified to the installer.
                 </p>
+
                 <code>
-                    if (condition_1) { statement_1; } else if (condition_2) {
-                        statement_2; } else if (condition_n) { statement_n; } else {
-                        statement_last; }
+                    if (condition_1) { statement_1; } else if (condition_2)
                 </code>
+
                 <p>
                     C++ users should note that although the API is defined entirely using C, the header files properly
                     declare the entry points to be extern "C". As a result, there is no need to do anything special to
