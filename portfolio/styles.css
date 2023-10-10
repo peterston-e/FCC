@@ -1,0 +1,92 @@
+:root {
+    --main-green: #35b8b2;
+    --main-blue: #150a6b;
+    --main-white: #f7f9fe;
+    --main-dark: #353639;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+
+
+html {
+    box-sizing: border-box;
+
+    /* Set font size for easy rem calculations
+     * default document font size = 16px, 1rem = 16px, 100% = 16px
+     * (100% / 16px) * 10 = 62.5%, 1rem = 10px, 62.5% = 10px
+    */
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+ul {
+    list-style: none;
+    margin-right: 1em;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 8rem;
+
+}
+
+#navbar {
+    display: flex;
+    justify-content: flex-end;
+    background-color: rgba(44, 44, 44, 0.045);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.nav-list {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    display: block;
+    font-size: 2rem;
+    text-decoration: none;
+    padding: 1.5rem;
+    color: var(--main-green);
+    text-shadow: 1px 1px 1px rgba(16, 56, 55, 0.15);
+}
+
+#welcome-section {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    color: var(--main-dark);
+    background: var(--main-white);
+}
+
+#welcome-section p {
+    color: var(--main-green);
+    text-align: center;
+    max-width: 700px;
+    margin: 2rem 5rem;
+    text-shadow: 1px 1px 1px rgba(16, 56, 55, 0.15);
+}
