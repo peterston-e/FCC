@@ -47,10 +47,15 @@ h1 {
 
 }
 
+img {
+    width: 100%;
+    height: auto;
+}
+
 #navbar {
     display: flex;
     justify-content: flex-end;
-    background-color: rgba(44, 44, 44, 0.045);
+    background-color: rgba(44, 44, 44, 0.723);
     position: fixed;
     top: 0;
     left: 0;
@@ -90,3 +95,47 @@ h1 {
     margin: 2rem 5rem;
     text-shadow: 1px 1px 1px rgba(16, 56, 55, 0.1);
 }
+
+#projects {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 1fr;
+    padding: 0 2em;
+}
+
+#projects a {
+    text-decoration: none;
+    color: #353639;
+    text-align: center;
+}
+
+#projects p {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(26, 26, 26, 0.313);
+    padding: 2rem;
+}
+
+.project-tile {
+    border: 1px solid rgba(26, 26, 26, 0.313);
+    padding: rem 1rem 0 1rem;
+    border-radius: 5px;
+}
+
+#profile-link {
+    align-items: center;
+    border: 1px solid rgba(26, 26, 26, 0.313);
+    border-radius: 5px;
+    width: 125px;
+    padding: 1rem 2rem;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+#font-awesome-icon {
+    font-size: 1em;
+}
+
+/* for media query */
+/* repeat(3, 1fr) */
